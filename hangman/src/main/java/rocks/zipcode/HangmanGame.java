@@ -3,41 +3,38 @@ package rocks.zipcode;
 import java.util.InputMismatchException;
 
 public class HangmanGame {
-    private boolean isRunning = true;
+
     private String[] wordList = {"abstract","continue","for","new","switch","assert","default","package",
         "synchronized","boolean","do","if","private","this","break", "double","implements","protected","throw"};
+    String gameString = this.generateWord();
+    String blankSpaces = this.generateBlankSpaces(gameString);
 
     public void drawScreen(String gameString, String blankSpaces, int guessesLeft){
-        System.out.printf("Current Guesses: %s\n",guessesLeft);
+        System.out.printf("\nCurrent Guesses: %s\n",guessesLeft);
         System.out.printf("%s\n",blankSpaces);
         System.out.printf("%s\n",gameString);
     }
 
     public void startGame(){
         int guessesLeft = 5;
-
+        Character letterGuess;
 
         System.out.println("Let's Play Hangman!");
-        while(isRunning == true){
-            String gameString = this.generateWord();
-            String blankSpaces = this.generateBlankSpaces(gameString);
-            Character letterGuess;
+        this.drawScreen(gameString,blankSpaces,guessesLeft);
 
-            this.drawScreen(gameString,blankSpaces,guessesLeft);
-
-            while(true) {
-                try {
-                    letterGuess = Console.getCharacterInput("Please enter a letter:");
-                    break;
-                } catch (InputMismatchException e) {
-                    Console.println("");
-                }
+        while(guessesLeft>0){
+            letterGuess = Console.getLetterInput("Please enter a letter:");
+            if(this.checkLetter(gameString,letterGuess)){
+                System.out.printf(" %s",this.getIndexOfCorrectLetter(gameString,letterGuess));
             }
-
-            this.checkLetter(gameString,letterGuess);
-
-
+            else{
+                guessesLeft--;
+                System.out.printf("Incorrect\n");
+            }
+            this.drawScreen(gameString,blankSpaces,guessesLeft);
         }
+
+
     }
 
     public String generateWord(){

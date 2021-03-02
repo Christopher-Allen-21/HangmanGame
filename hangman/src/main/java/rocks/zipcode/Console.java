@@ -1,5 +1,6 @@
 package rocks.zipcode;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -37,11 +38,22 @@ public class Console {
         return userInput;
     }
     */
-    public static Character getCharacterInput(String prompt) {
+    public static Character getLetterInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
         println(prompt);
-        Character userInput = scanner.next().charAt(0);
-        return userInput;
+        String userInput;
+
+        while(true){
+            userInput = scanner.nextLine().toLowerCase();
+            if(userInput.length()==1){
+                if(userInput.charAt(0)>='a' && userInput.charAt(0)<='z'){
+                    break;
+                }
+            }
+            println("Please enter a single letter:");
+        }
+        return userInput.charAt(0);
     }
 
 }
+
