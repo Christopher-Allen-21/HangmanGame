@@ -12,7 +12,7 @@ public class HangmanGame {
     String blankSpaces = this.generateBlankSpaces(gameString);
 
     public void drawScreen(String gameString, String blankSpaces, int guessesLeft){
-        System.out.printf("Current Guesses: %s\n",guessesLeft);
+        System.out.printf("\nCurrent Guesses: %s\n",guessesLeft);
         System.out.printf("%s\n",blankSpaces);
         System.out.printf("%s\n",gameString);
     }
@@ -21,18 +21,22 @@ public class HangmanGame {
         int guessesLeft = 5;
         Character letterGuess;
 
-        System.out.println("Let's Play Hangman!");
+        System.out.printf("Let's Play Hangman!");
         this.drawScreen(gameString,blankSpaces,guessesLeft);
 
         while(guessesLeft>0){
             letterGuess = Console.getLetterInput("Please enter a letter:");
             if(this.checkLetter(gameString,letterGuess)){
                 blankSpaces = this.addLettersToBlanks(blankSpaces,getIndexOfCorrectLetter(gameString,letterGuess),letterGuess);
-                System.out.printf("\n%s is correct!\n",letterGuess);
+                System.out.printf("\n%s is correct!",letterGuess);
+                if(this.checkWin(gameString,blankSpaces)){
+                    System.out.printf("\nCongratulations! You win!\n");
+                    break;
+                }
             }
             else{
                 guessesLeft--;
-                System.out.printf("\n%s is incorrect!\n",letterGuess);
+                System.out.printf("\n%s is incorrect!",letterGuess);
             }
             this.drawScreen(gameString,blankSpaces,guessesLeft);
         }
@@ -79,6 +83,23 @@ public class HangmanGame {
         }
         //placeholder
         return 12345;
+    }
+
+    public boolean checkWin(String gameString,String blankSpaces){
+        char[] charBlankSpaces = blankSpaces.toCharArray();
+        String blankSpacesRemoved = "";
+
+        for(int i=0;i<charBlankSpaces.length;i=i+2){
+            blankSpacesRemoved += charBlankSpaces[i];
+        }
+
+        if(blankSpacesRemoved.equals(gameString)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
 
