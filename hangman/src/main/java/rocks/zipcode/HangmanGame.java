@@ -1,5 +1,6 @@
 package rocks.zipcode;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class HangmanGame {
@@ -14,7 +15,6 @@ public class HangmanGame {
     public void drawScreen(String gameString, String blankSpaces, int guessesLeft){
         System.out.printf("\nCurrent Guesses: %s\n",guessesLeft);
         System.out.printf("%s\n",blankSpaces);
-        System.out.printf("%s\n",gameString);
     }
 
     public void startGame(){
@@ -57,9 +57,12 @@ public class HangmanGame {
         return blankSpaces;
     }
 
-    public String addLettersToBlanks(String blankSpaces,int index,Character letterGuess){
+    public String addLettersToBlanks(String blankSpaces,ArrayList<Integer> indices,Character letterGuess){
         char[] charBlankSpace = blankSpaces.toCharArray();
-        charBlankSpace[index*2] = letterGuess;
+        for(int i=0;i<indices.size();i++){
+            charBlankSpace[indices.get(i)*2] = letterGuess;
+        }
+
         String returnString = new String(charBlankSpace);
         return returnString;
     }
@@ -74,15 +77,15 @@ public class HangmanGame {
         return false;
     }
 
-    public int getIndexOfCorrectLetter(String gameString, Character letterGuess){
+    public ArrayList<Integer> getIndexOfCorrectLetter(String gameString, Character letterGuess){
+        ArrayList<Integer> correctLetterIndices = new ArrayList<>();
         char[] charGameString = gameString.toCharArray();
         for(int i=0;i<charGameString.length;i++){
             if(charGameString[i]==letterGuess){
-                return i;
+                correctLetterIndices.add(i);
             }
         }
-        //placeholder
-        return 12345;
+        return correctLetterIndices;
     }
 
     public boolean checkWin(String gameString,String blankSpaces){
