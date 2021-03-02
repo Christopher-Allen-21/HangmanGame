@@ -50,7 +50,7 @@ public class Console {
                     break;
                 }
             }
-            println("Please enter a single letter:");
+            println("Please enter a single letter:\n");
         }
         return userInput.charAt(0);
     }

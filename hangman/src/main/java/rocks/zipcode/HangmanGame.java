@@ -4,13 +4,15 @@ import java.util.InputMismatchException;
 
 public class HangmanGame {
 
-    private String[] wordList = {"abstract","continue","for","new","switch","assert","default","package",
-        "synchronized","boolean","do","if","private","this","break", "double","implements","protected","throw"};
+    private String[] wordList = {"abstract","assert","boolean","break","byte","case","catch","char","class","continue","default","do","double",
+    "else","enum","extends","final","finally","float","for","if","implements","import","instanceof","int","interface","long","native","new",
+    "package","private","protected","public","return","short","static","super","switch","synchronized","this","throws","throw","transient",
+    "try","void","volatile","while"};
     String gameString = this.generateWord();
     String blankSpaces = this.generateBlankSpaces(gameString);
 
     public void drawScreen(String gameString, String blankSpaces, int guessesLeft){
-        System.out.printf("\nCurrent Guesses: %s\n",guessesLeft);
+        System.out.printf("Current Guesses: %s\n",guessesLeft);
         System.out.printf("%s\n",blankSpaces);
         System.out.printf("%s\n",gameString);
     }
@@ -25,11 +27,12 @@ public class HangmanGame {
         while(guessesLeft>0){
             letterGuess = Console.getLetterInput("Please enter a letter:");
             if(this.checkLetter(gameString,letterGuess)){
-                System.out.printf(" %s",this.getIndexOfCorrectLetter(gameString,letterGuess));
+                blankSpaces = this.addLettersToBlanks(blankSpaces,getIndexOfCorrectLetter(gameString,letterGuess),letterGuess);
+                System.out.printf("\n%s is correct!\n",letterGuess);
             }
             else{
                 guessesLeft--;
-                System.out.printf("Incorrect\n");
+                System.out.printf("\n%s is incorrect!\n",letterGuess);
             }
             this.drawScreen(gameString,blankSpaces,guessesLeft);
         }
@@ -48,6 +51,13 @@ public class HangmanGame {
             blankSpaces += "_ ";
         }
         return blankSpaces;
+    }
+
+    public String addLettersToBlanks(String blankSpaces,int index,Character letterGuess){
+        char[] charBlankSpace = blankSpaces.toCharArray();
+        charBlankSpace[index*2] = letterGuess;
+        String returnString = new String(charBlankSpace);
+        return returnString;
     }
 
     public boolean checkLetter(String gameString, Character letterGuess){
