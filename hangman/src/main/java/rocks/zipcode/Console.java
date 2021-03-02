@@ -55,5 +55,27 @@ public class Console {
         return userInput.charAt(0);
     }
 
+    public static boolean keepPlaying() {
+        boolean keepPlaying;
+        String prompt = "Would you like to play again? (Please enter yes or no)";
+
+        Scanner scanner = new Scanner(System.in);
+        println(prompt);
+        while(true){
+            String userInput = scanner.nextLine();
+            if(userInput.equalsIgnoreCase("yes")){
+                keepPlaying = true;
+                break;
+            }
+            else if(userInput.equalsIgnoreCase("no")){
+                keepPlaying = false;
+                break;
+            }
+            print("Please enter yes or no.\n");
+        }
+
+        return keepPlaying;
+    }
+
 }
 

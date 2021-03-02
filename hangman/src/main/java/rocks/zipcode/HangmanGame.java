@@ -9,8 +9,7 @@ public class HangmanGame {
     "else","enum","extends","final","finally","float","for","if","implements","import","instanceof","int","interface","long","native","new",
     "package","private","protected","public","return","short","static","super","switch","synchronized","this","throws","throw","transient",
     "try","void","volatile","while"};
-    String gameString = this.generateWord();
-    String blankSpaces = this.generateBlankSpaces(gameString);
+
 
     public void drawScreen(String gameString, String blankSpaces, int guessesLeft){
         System.out.printf("\nCurrent Guesses: %s\n",guessesLeft);
@@ -18,27 +17,39 @@ public class HangmanGame {
     }
 
     public void startGame(){
+        String gameString = this.generateWord();
+        String blankSpaces = this.generateBlankSpaces(gameString);
         int guessesLeft = 5;
         Character letterGuess;
 
         System.out.printf("Let's Play Hangman!");
         this.drawScreen(gameString,blankSpaces,guessesLeft);
 
-        while(guessesLeft>0){
+        while(true){
             letterGuess = Console.getLetterInput("Please enter a letter:");
             if(this.checkLetter(gameString,letterGuess)){
                 blankSpaces = this.addLettersToBlanks(blankSpaces,getIndexOfCorrectLetter(gameString,letterGuess),letterGuess);
                 System.out.printf("\n%s is correct!",letterGuess);
                 if(this.checkWin(gameString,blankSpaces)){
-                    System.out.printf("\nCongratulations! You win!\n");
+                    System.out.printf("\nThe word was \"%s\"!\n",gameString);
+                    System.out.printf("Congratulations! You win!\n");
                     break;
                 }
             }
             else{
                 guessesLeft--;
                 System.out.printf("\n%s is incorrect!",letterGuess);
+                if(guessesLeft==0){
+                    System.out.printf("\nSorry. You lose.\n");
+                    System.out.printf("The correct answer was \"%s\".\n",gameString);
+                    break;
+                }
             }
             this.drawScreen(gameString,blankSpaces,guessesLeft);
+        }
+
+        if(Console.keepPlaying()){
+            this.startGame();
         }
 
 
